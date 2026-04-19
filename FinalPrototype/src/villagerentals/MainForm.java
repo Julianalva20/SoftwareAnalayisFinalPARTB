@@ -81,3 +81,35 @@ public class MainForm {
         }
     }
 }
+package villagerentals;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+
+public class MainForm extends JFrame {
+    private JButton btnRental;
+
+    private ArrayList<Client> clients;
+    private ArrayList<Equipment> equipmentList;
+    private ArrayList<Rental> rentals;
+
+    public MainForm(ArrayList<Client> clients, ArrayList<Equipment> equipmentList) {
+        this.clients = clients;
+        this.equipmentList = equipmentList;
+        this.rentals = FileHandler.loadRentals("rentals.txt");
+
+        setTitle("Village Rentals System");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new FlowLayout());
+
+        btnRental = new JButton("Process Rental");
+        add(btnRental);
+
+        btnRental.addActionListener(e -> new RentalForm(clients, equipmentList, rentals));
+
+        setVisible(true);
+    }
+}
