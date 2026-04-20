@@ -1,4 +1,4 @@
-package main;
+package form;
 
 import java.util.Scanner;
 import manager.CustomerManager;
