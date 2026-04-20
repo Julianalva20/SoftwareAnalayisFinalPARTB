@@ -1,10 +1,15 @@
-package villagerentals;
+package form;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Manager.FileHandler;
+import villagerentals.Customer;
+import villagerentals.Equipment;
+import villagerentals.Rental;
+
 public class MainForm {
-    static ArrayList<Client> clients = new ArrayList<>();
+    static ArrayList<Customer> customers = new ArrayList<>();
     static ArrayList<Equipment> equipmentList = new ArrayList<>();
     static ArrayList<Rental> rentals = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
@@ -108,8 +113,8 @@ public class MainForm {
     }
 
     static void processRental() {
-        if (clients.isEmpty()) {
-            System.out.println("No clients available.");
+        if (customers.isEmpty()) {
+            System.out.println("No customers available.");
             return;
         }
 
@@ -118,20 +123,31 @@ public class MainForm {
             return;
         }
 
-        System.out.print("Enter Client ID: ");
-        int clientId = scanner.nextInt();
+        System.out.print("Enter Rental ID: ");
+        String rentalId = scanner.nextLine();
+
+        // check duplicate rental ID
+        for (Rental r : rentals) {
+            if (r.getRentalId().equalsIgnoreCase(rentalId)) {
+                System.out.println("Rental ID already exists.");
+                return;
+            }
+        }
+
+        System.out.print("Enter Customer ID: ");
+        int customerId = scanner.nextInt();
         scanner.nextLine();
 
-        Client selectedClient = null;
-        for (Client c : clients) {
-            if (c.getClientID() == clientId) {
-                selectedClient = c;
+        Customer selectedCustomer = null;
+        for (Customer c : customers) {
+            if (c.getCustomerId() == customerId) {
+                selectedCustomer = c;
                 break;
             }
         }
 
-        if (selectedClient == null) {
-            System.out.println("Client not found.");
+        if (selectedCustomer == null) {
+            System.out.println("Customer not found.");
             return;
         }
 
@@ -152,15 +168,26 @@ public class MainForm {
             return;
         }
 
-        System.out.print("Enter Number of Rental Days: ");
-        int days = scanner.nextInt();
+        System.out.print("Enter Rental Date (YYYY-MM-DD): ");
+        String rentalDate = scanner.nextLine();
+
+        System.out.print("Enter Return Date (YYYY-MM-DD): ");
+        String returnDate = scanner.nextLine();
+
+        System.out.print("Enter Total Cost: ");
+        double totalCost = scanner.nextDouble();
         scanner.nextLine();
 
-        double totalCost = selectedEquipment.getDailyRentalCost() * days;
+        Rental rental = new Rental(
+            rentalId,
+            String.valueOf(selectedCustomer.getCustomerId()),
+            String.valueOf(selectedEquipment.getEquipmentID()),
+            rentalDate,
+            returnDate,
+            totalCost
+        );
 
-        Rental rental = new Rental(selectedClient, selectedEquipment, days, totalCost);
         rentals.add(rental);
-
         FileHandler.saveRentals(rentals, "rentals.txt");
 
         System.out.println("Rental processed successfully!");
