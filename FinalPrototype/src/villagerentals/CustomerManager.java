@@ -1,4 +1,4 @@
-package manager;
+package villageRentals;
 
 import model.Customer;
 import java.io.*;
