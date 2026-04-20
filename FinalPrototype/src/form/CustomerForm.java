@@ -1,8 +1,11 @@
 package form;
 
+import java.util.ArrayList;
+
 import java.util.Scanner;
-import manager.CustomerManager;
-import model.Customer;
+
+import Manager.CustomerManager;
+import villagerentals.Customer;
  
 public class CustomerForm {
  
