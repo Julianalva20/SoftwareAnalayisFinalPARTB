@@ -1,4 +1,4 @@
-package model;
+package villageRental;
 
 public class Customer {
     private int customerId;
