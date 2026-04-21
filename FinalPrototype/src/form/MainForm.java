@@ -1,6 +1,7 @@
 package form;
 
 import java.util.ArrayList;
+import Manager.CustomerManager;
 import java.util.Scanner;
 
 import Manager.FileHandler;
@@ -15,17 +16,18 @@ public class MainForm {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        rentals = FileHandler.loadRentals("rentals.txt");
+    	customers = CustomerManager.loadCustomers();
+    	rentals = FileHandler.loadRentals("rentals.txt");
 
         while (true) {
             System.out.println("\n=== Village Rentals System ===");
-            System.out.println("1. Add Equipment");
+            System.out.println("\n1. Add Equipment");
             System.out.println("2. Display Equipment");
             System.out.println("3. Delete Equipment");
             System.out.println("4. Process Rental");
             System.out.println("5. Display Rentals");
             System.out.println("6. Exit");
-            System.out.print("Enter choice: ");
+            System.out.print("\nEnter choice: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
