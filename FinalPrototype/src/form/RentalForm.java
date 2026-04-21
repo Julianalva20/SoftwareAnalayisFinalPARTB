@@ -1,24 +1,31 @@
-package villagerentals;
+package form;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Manager.FileHandler;
+import villagerentals.Customer;
+import villagerentals.Equipment;
+import villagerentals.Rental;
+
 public class RentalForm {
 
-    private ArrayList<Client> clients;
+    private ArrayList<Customer> customers;
     private ArrayList<Equipment> equipmentList;
     private ArrayList<Rental> rentals;
     private Scanner scanner;
 
-    public RentalForm(ArrayList<Client> clients, ArrayList<Equipment> equipmentList, ArrayList<Rental> rentals) {
-        this.clients = clients;
+    public RentalForm(ArrayList<Customer> customers, ArrayList<Equipment> equipmentList, ArrayList<Rental> rentals) {
+        this.customers = customers;
         this.equipmentList = equipmentList;
         this.rentals = rentals;
         this.scanner = new Scanner(System.in);
+    }
 
-        processRental(); // directly run in console
+    public void start() {
+        processRental();
     }
 
     private void processRental() {
@@ -28,10 +35,10 @@ public class RentalForm {
         String rentalId = scanner.nextLine();
 
         System.out.print("Enter Customer ID: ");
-        String customerId = scanner.nextLine();
+        int customerId = Integer.parseInt(scanner.nextLine());
 
         System.out.print("Enter Equipment ID: ");
-        String equipmentId = scanner.nextLine();
+        int equipmentId = Integer.parseInt(scanner.nextLine());
 
         System.out.print("Enter Rental Date (YYYY-MM-DD): ");
         String rentalDateText = scanner.nextLine();
@@ -39,9 +46,9 @@ public class RentalForm {
         System.out.print("Enter Return Date (YYYY-MM-DD): ");
         String returnDateText = scanner.nextLine();
 
-        Client client = findClientById(customerId);
-        if (client == null) {
-            System.out.println("Client not found.");
+        Customer customer = findCustomerById(customerId);
+        if (customer == null) {
+            System.out.println("Customer not found.");
             return;
         }
 
@@ -64,7 +71,6 @@ public class RentalForm {
 
             double totalCost = days * equipment.getDailyRentalCost();
 
-            // Check duplicate rental ID
             for (Rental r : rentals) {
                 if (r.getRentalId().equalsIgnoreCase(rentalId)) {
                     System.out.println("Rental ID already exists.");
@@ -73,12 +79,12 @@ public class RentalForm {
             }
 
             Rental rental = new Rental(
-                    rentalId,
-                    customerId,
-                    equipmentId,
-                    rentalDateText,
-                    returnDateText,
-                    totalCost
+                rentalId,
+                String.valueOf(customerId),
+                String.valueOf(equipmentId),
+                rentalDateText,
+                returnDateText,
+                totalCost
             );
 
             rentals.add(rental);
@@ -88,22 +94,22 @@ public class RentalForm {
             System.out.println("Total Cost: $" + totalCost);
 
         } catch (Exception e) {
-            System.out.println("Invalid date format. Use YYYY-MM-DD.");
+            System.out.println("Invalid input or date format. Use YYYY-MM-DD.");
         }
     }
 
-    private Client findClientById(String customerId) {
-        for (Client client : clients) {
-            if (client.getCustomerId().equalsIgnoreCase(customerId)) {
-                return client;
+    private Customer findCustomerById(int customerId) {
+        for (Customer customer : customers) {
+            if (customer.getCustomerId() == customerId) {
+                return customer;
             }
         }
         return null;
     }
 
-    private Equipment findEquipmentById(String equipmentId) {
+    private Equipment findEquipmentById(int equipmentId) {
         for (Equipment equipment : equipmentList) {
-            if (equipment.getEquipmentId().equalsIgnoreCase(equipmentId)) {
+            if (equipment.getEquipmentID() == equipmentId) {
                 return equipment;
             }
         }
